@@ -15,11 +15,11 @@ import (
 
 type creationContext struct {
 	rootArchivePath string
-	archive *tar.Writer
-	mapping map[string]bool
+	archive         *tar.Writer
+	mapping         map[string]bool
 }
 
-func (ctx* creationContext) addDir(dirPath string, archivePath string, dir *os.File, isRoot bool) error {
+func (ctx *creationContext) addDir(dirPath string, archivePath string, dir *os.File, isRoot bool) error {
 	entries, err := dir.Readdir(0)
 	if err != nil {
 		return err
@@ -39,13 +39,13 @@ func (ctx* creationContext) addDir(dirPath string, archivePath string, dir *os.F
 	return nil
 }
 
-func (ctx* creationContext) addEntry(entryPath string, archivePath string, fi os.FileInfo) error {
+func (ctx *creationContext) addEntry(entryPath string, archivePath string, fi os.FileInfo) error {
 	f, err := os.OpenFile(entryPath, os.O_RDONLY, 0)
 	if err != nil {
 		return err
 	}
 
-	if fi.Mode() & (os.ModeDir | os.ModeSymlink) == os.ModeDir {
+	if fi.Mode()&(os.ModeDir|os.ModeSymlink) == os.ModeDir {
 		// Entry is a directory.
 		return ctx.addDir(entryPath, archivePath, f, false)
 	}
